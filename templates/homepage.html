@@ -1,0 +1,541 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Interactive Chatbot UI</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            height: 100vh;-->
+<!--            background-color: #f0f0f0;-->
+<!--        }-->
+
+<!--        #chatbox {-->
+<!--            height: 300px;-->
+<!--            width: 300px;-->
+<!--            overflow-y: scroll;-->
+<!--            border: 1px solid #ccc;-->
+<!--            padding: 10px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+
+<!--        #userInput {-->
+<!--            width: 70%;-->
+<!--            padding: 8px;-->
+<!--            font-size: 16px;-->
+<!--            margin-right: 10px;-->
+<!--        }-->
+
+<!--        #sendButton {-->
+<!--            padding: 10px;-->
+<!--            font-size: 16px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div id="chatbox"></div>-->
+<!--<div style="display: flex; align-items: center;">-->
+<!--    <input type="text" id="userInput" placeholder="Type your message..." onkeydown="handleKeyPress(event)">-->
+<!--    <button id="sendButton" onclick="sendMessage()">Send</button>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    const chatbox = document.getElementById('chatbox');-->
+<!--    const userInput = document.getElementById('userInput');-->
+<!--    const tokenData = sessionStorage.getItem('jwtToken');-->
+
+<!--    function handleKeyPress(event) {-->
+<!--        if (event.key === 'Enter') {-->
+<!--            sendMessage();-->
+<!--        }-->
+<!--    }-->
+
+<!--    function sendMessage() {-->
+<!--        const userMessage = userInput.value.trim();-->
+
+<!--        if (userMessage === '') {-->
+<!--            return; // Don't send empty messages-->
+<!--        }-->
+
+<!--        // Display user message in the chatbox-->
+<!--        displayMessage('You: ' + userMessage, 'user');-->
+
+<!--        // Call the API to get a response-->
+<!--        callApi(userMessage);-->
+
+<!--        // Clear the user input-->
+<!--        userInput.value = '';-->
+<!--    }-->
+
+<!--    function displayMessage(message, sender) {-->
+<!--        const messageElement = document.createElement('div');-->
+<!--        messageElement.textContent = message;-->
+
+<!--        messageElement.innerHTML = message.replaceAll('"','');-->
+
+<!--        if (sender === 'user') {-->
+<!--            messageElement.style.textAlign = 'right';-->
+<!--            messageElement.style.color = 'blue';-->
+<!--        } else {-->
+<!--            messageElement.style.textAlign = 'left';-->
+<!--            messageElement.style.color = 'green';-->
+<!--        }-->
+
+<!--        chatbox.appendChild(messageElement);-->
+<!--        chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to the bottom-->
+<!--    }-->
+
+<!--    function callApi(userMessage) {-->
+<!--        const apiUrl = 'http://localhost:8000/chat';-->
+<!--        // Create a FormData object and append the user_message parameter-->
+<!--        const formData = new FormData();-->
+<!--        const token = sessionStorage.getItem('jwtToken');-->
+<!--        formData.append('user_text', userMessage);-->
+
+<!--        fetch(apiUrl, {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Authorization': `Bearer ${token}`-->
+<!--            },-->
+<!--            body: formData,-->
+<!--        })-->
+<!--        .then(response => response.text())-->
+<!--        .then(botResponse => {-->
+<!--            // Display the bot's response in the chatbox-->
+<!--            displayMessage('Bot: ' + botResponse.replaceAll('\\n','<br>'), 'bot');-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error:', error);-->
+<!--            // Display an error message in the chatbox-->
+<!--            displayMessage('Bot: Error fetching response', 'bot');-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Interactive Chatbot UI</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            height: 100vh;-->
+<!--            background: linear-gradient(135deg, #008080 50%, #004040 50%); /* Diagonal gradient with two teal colors */-->
+<!--            color: #fff; /* White text color */-->
+<!--        }-->
+
+<!--        #chatbox {-->
+<!--            height: 500px;-->
+<!--            width: 600px; /* Increased width */-->
+<!--            overflow-y: scroll;-->
+<!--            border: 1px solid #fff; /* White border */-->
+<!--            padding: 10px;-->
+<!--            margin-bottom: 10px;-->
+<!--            background-color: #fff; /* White background color for chatbox */-->
+<!--            color: #000; /* Black text color for user messages */-->
+<!--            border-radius: 20px; /* Rounder corners */-->
+<!--        }-->
+
+<!--        #userInput {-->
+<!--            width: 70%;-->
+<!--            padding: 8px;-->
+<!--            font-size: 16px;-->
+<!--            margin-right: 10px;-->
+<!--            border: 1px solid #fff; /* White border */-->
+<!--            border-radius: 5px;-->
+<!--            background-color: #008080; /* Teal background color */-->
+<!--            color: #fff; /* White text color */-->
+<!--        }-->
+
+<!--        #sendButton {-->
+<!--            padding: 10px;-->
+<!--            font-size: 16px;-->
+<!--            cursor: pointer;-->
+<!--            border: 1px solid #fff; /* White border */-->
+<!--            border-radius: 5px;-->
+<!--            background-color: #008080; /* Teal background color */-->
+<!--            color: #fff; /* White text color */-->
+<!--        }-->
+
+<!--        /* Bot text color */-->
+<!--        .bot-message {-->
+<!--            color: #000; /* Black text color for bot messages */-->
+<!--        }-->
+
+<!--        /* Rounder corners for messages */-->
+<!--        .message-container {-->
+<!--            margin-bottom: 10px;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .user-message {-->
+<!--            display: flex;-->
+<!--            justify-content: flex-end;-->
+<!--            margin-left: auto; /* Push to the right */-->
+<!--        }-->
+
+<!--        .user-message .message-text {-->
+<!--            background-color: #008080; /* Teal background color */-->
+<!--            color: #fff; /* White text color */-->
+<!--            border-radius: 20px; /* Rounder corners for user messages */-->
+<!--            padding: 10px;-->
+<!--            max-width: 70%; /* Adjusted maximum width */-->
+<!--            word-wrap: break-word;-->
+<!--        }-->
+
+<!--        .bot-message {-->
+<!--            display: flex;-->
+<!--            justify-content: flex-start;-->
+<!--            margin-right: auto; /* Push to the left */-->
+<!--        }-->
+
+<!--        .bot-message .message-text {-->
+<!--            background-color: #ddd; /* Light gray background color for bot messages */-->
+<!--            color: #000; /* Black text color for bot messages */-->
+<!--            border-radius: 20px; /* Rounder corners for bot messages */-->
+<!--            padding: 10px;-->
+<!--            max-width: 70%; /* Adjusted maximum width */-->
+<!--            word-wrap: break-word;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div id="chatbox"></div>-->
+<!--<div style="display: flex; align-items: center;">-->
+<!--    <input type="text" id="userInput" placeholder="Type your message..." onkeydown="handleKeyPress(event)">-->
+<!--    <button id="sendButton" onclick="sendMessage()">Send</button>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    const chatbox = document.getElementById('chatbox');-->
+<!--    const userInput = document.getElementById('userInput');-->
+<!--    const tokenData = sessionStorage.getItem('jwtToken');-->
+
+<!--    window.onload = function() {-->
+<!--   // Display welcome message from the assistant-->
+<!--   displayMessage('Assistant: Hi, I\'m your assistant. How can I help you?', 'bot');-->
+<!--    };-->
+
+
+<!--    function handleKeyPress(event) {-->
+<!--        if (event.key === 'Enter') {-->
+<!--            sendMessage();-->
+<!--        }-->
+<!--    }-->
+
+<!--    function sendMessage() {-->
+<!--        const userMessage = userInput.value.trim();-->
+
+<!--        if (userMessage === '') {-->
+<!--            return; // Don't send empty messages-->
+<!--        }-->
+
+<!--        // Display user message in the chatbox-->
+<!--        displayMessage('You: ' + userMessage, 'user');-->
+
+<!--        // Call the API to get a response-->
+<!--        callApi(userMessage);-->
+
+<!--        // Clear the user input-->
+<!--        userInput.value = '';-->
+<!--    }-->
+
+<!--    function displayMessage(message, sender) {-->
+<!--        const messageContainer = document.createElement('div');-->
+<!--        messageContainer.classList.add('message-container');-->
+
+<!--        const messageElement = document.createElement('div');-->
+<!--        messageElement.textContent = message;-->
+
+<!--        messageElement.innerHTML = message.replaceAll('"','');-->
+
+<!--        if (sender === 'user') {-->
+<!--            messageContainer.classList.add('user-message');-->
+<!--        } else {-->
+<!--            messageContainer.classList.add('bot-message');-->
+<!--            messageElement.classList.add('bot-message'); // Add bot message class-->
+<!--        }-->
+
+<!--        const textContainer = document.createElement('div');-->
+<!--        textContainer.classList.add('message-text');-->
+<!--        textContainer.appendChild(messageElement);-->
+
+<!--        messageContainer.appendChild(textContainer);-->
+<!--        chatbox.appendChild(messageContainer);-->
+<!--        chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to the bottom-->
+<!--    }-->
+
+<!--    function callApi(userMessage) {-->
+<!--        const apiUrl = 'http://localhost:8000/chat';-->
+<!--        // Create a FormData object and append the user_message parameter-->
+<!--        const formData = new FormData();-->
+<!--        const token = sessionStorage.getItem('jwtToken');-->
+<!--        formData.append('user_text', userMessage);-->
+
+<!--        fetch(apiUrl, {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Authorization': `Bearer ${token}`-->
+<!--            },-->
+<!--            body: formData,-->
+<!--        })-->
+<!--        .then(response => response.text())-->
+<!--        .then(botResponse => {-->
+<!--            // Display the bot's response in the chatbox-->
+<!--            displayMessage('Assistant: ' + botResponse.replaceAll('\\n','<br>'), 'bot');-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error:', error);-->
+<!--            // Display an error message in the chatbox-->
+<!--            displayMessage('Bot: Error fetching response', 'bot');-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Chatbot UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #008080 50%, #004040 50%); /* Diagonal gradient with two teal colors */
+            color: #fff; /* White text color */
+        }
+
+        #chatbox {
+            height: 500px;
+            width: 600px; /* Increased width */
+            overflow-y: scroll;
+            border: 1px solid #fff; /* White border */
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff; /* White background color for chatbox */
+            color: #000; /* Black text color for user messages */
+            border-radius: 20px; /* Rounder corners */
+        }
+
+        #userInput {
+            width: 70%;
+            padding: 8px;
+            font-size: 16px;
+            margin-right: 10px;
+            border: 1px solid #fff; /* White border */
+            border-radius: 5px;
+            background-color: #008080; /* Teal background color */
+            color: #fff; /* White text color */
+        }
+
+        #sendButton {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #fff; /* White border */
+            border-radius: 5px;
+            background-color: #008080; /* Teal background color */
+            color: #fff; /* White text color */
+        }
+
+        /* Bot text color */
+        .bot-message {
+            color: #000; /* Black text color for bot messages */
+        }
+
+        /* Rounder corners for messages */
+        .message-container {
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .user-message {
+            display: flex;
+            justify-content: flex-end;
+            margin-left: auto; /* Push to the right */
+        }
+
+        .user-message .message-text {
+            background-color: #008080; /* Teal background color */
+            color: #fff; /* White text color */
+            border-radius: 20px; /* Rounder corners for user messages */
+            padding: 10px;
+            max-width: 70%; /* Adjusted maximum width */
+            word-wrap: break-word;
+        }
+
+        .bot-message {
+            display: flex;
+            justify-content: flex-start;
+            margin-right: auto; /* Push to the left */
+        }
+
+        .bot-message .message-text {
+            background-color: #ddd; /* Light gray background color for bot messages */
+            color: #000; /* Black text color for bot messages */
+            border-radius: 20px; /* Rounder corners for bot messages */
+            padding: 10px;
+            max-width: 70%; /* Adjusted maximum width */
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+<div id="chatbox"></div>
+<div style="display: flex; align-items: center;">
+    <input type="text" id="userInput" placeholder="Type your message..." onkeydown="handleKeyPress(event)">
+    <button id="sendButton" onclick="sendMessage()">Send</button>
+</div>
+
+<!-- Add "End Chat" button -->
+<button id="endChatButton" onclick="endChat()">End Chat</button>
+
+<script>
+    const chatbox = document.getElementById('chatbox');
+    const userInput = document.getElementById('userInput');
+    const tokenData = sessionStorage.getItem('jwtToken');
+
+    window.onload = function() {
+        // Display welcome message from the assistant
+        displayMessage('Assistant: Hi, I\'m your assistant. How can I help you?', 'bot');
+    };
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    function sendMessage() {
+        const userMessage = userInput.value.trim();
+
+        if (userMessage === '') {
+            return; // Don't send empty messages
+        }
+
+        // Display user message in the chatbox
+        displayMessage('You: ' + userMessage, 'user');
+
+        // Call the API to get a response
+        callApi(userMessage);
+
+        // Clear the user input
+        userInput.value = '';
+    }
+
+    function displayMessage(message, sender) {
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('message-container');
+
+        const messageElement = document.createElement('div');
+        messageElement.textContent = message;
+
+        messageElement.innerHTML = message.replaceAll('"','');
+
+        if (sender === 'user') {
+            messageContainer.classList.add('user-message');
+        } else {
+            messageContainer.classList.add('bot-message');
+            messageElement.classList.add('bot-message'); // Add bot message class
+        }
+
+        const textContainer = document.createElement('div');
+        textContainer.classList.add('message-text');
+        textContainer.appendChild(messageElement);
+
+        messageContainer.appendChild(textContainer);
+        chatbox.appendChild(messageContainer);
+        chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to the bottom
+    }
+
+    function callApi(userMessage) {
+        const apiUrl = 'http://localhost:8000/chat';
+        // Create a FormData object and append the user_message parameter
+        const formData = new FormData();
+        const token = sessionStorage.getItem('jwtToken');
+        formData.append('user_text', userMessage);
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData,
+        })
+        .then(response => response.text())
+        .then(botResponse => {
+            // Display the bot's response in the chatbox
+            displayMessage('Assistant: ' + botResponse.replaceAll('\\n','<br>'), 'bot');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Display an error message in the chatbox
+            displayMessage('Bot: Error fetching response', 'bot');
+        });
+    }
+
+    function endChat(userMessage) {
+    console.log('end chat called');
+        const token = sessionStorage.getItem('jwtToken');
+        const apiUrl = 'http://localhost:8000/end_session';
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('End Chat response:', data);
+            // Display a message in the chatbox indicating the end of the session
+            displayMessage('Assistant: Session ended. You can start a new session.', 'bot');
+        })
+        .catch(error => {
+            console.error('Error ending chat:', error);
+            // Display an error message in the chatbox
+            displayMessage('Bot: Error ending chat', 'bot');
+        });
+    }
+</script>
+
+</body>
+</html>
