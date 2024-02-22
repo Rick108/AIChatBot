@@ -11,12 +11,15 @@ from langchain.chains import ConversationChain
 from langchain.agents import create_sql_agent
 from langchain_experimental.sql import SQLDatabaseChain
 from langchain.agents.agent_types import AgentType
-from langchain.llms import GooglePalm, VertexAI
+#from langchain.llms import GooglePalm, VertexAI
 from langchain_community.embeddings import VertexAIEmbeddings
 from langchain.schema import Document
 from langchain_community.vectorstores import FAISS
 from langchain.tools.retriever import create_retriever_tool
+from langchain_google_vertexai import VertexAI
+import os
 
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/sayan/ChatBot/AIChatBot/exam-preparation-409915-0f518085bf0c.json"
 
 
 # def bedrock_chatbot():
@@ -36,12 +39,12 @@ from langchain.tools.retriever import create_retriever_tool
 #     return conversation.predict
 
 def bedrock_chatbot():
-    bedrock_runtime = boto3.client(
-        service_name='bedrock-runtime',
-        aws_access_key_id= 'AKIATT6RTTXJAXOJONYP',
-        aws_secret_access_key='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',
-        region_name='us-east-1'
-    )
+    #bedrock_runtime = boto3.client(
+    #    service_name='bedrock-runtime',
+    #    aws_access_key_id= 'AKIATT6RTTXJAXOJONYP',
+    #    aws_secret_access_key='2eCUrxW6rNtjPng8grtCzl0Zh/zPbZ2MC6r6y1wV',
+    #   region_name='us-east-1'
+    #)
 
     #model_parameter = {"temperature": 0.0, "top_p": .5, "max_tokens_to_sample": 2000}  # parameters define
     #llm = Bedrock(model_id="anthropic.claude-v2", model_kwargs=model_parameter, client=bedrock_runtime)  # model define
